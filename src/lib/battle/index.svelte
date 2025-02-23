@@ -8,25 +8,44 @@
 	let viewSize = $state(9)
 	let viewId = $state(0)
 	let view = $derived(viewList[viewId])
-	let fighter: FighterType = $state()
-	let loading = $state(true)
-	let prepend = $derived(gArr(viewSize - view?.length | 0))
+	let prepend = $derived(gArr((viewSize - view?.length) | 0))
+	let fighter: FighterType = $state({} | null)
+	let detailPage = $state(false)
+	let loading = $state(false)
+
+	const selectPkmn = async (e) => {
+		const index = parseInt(e.currentTarget.dataset.pkmn)
+		const { id, name, base, type }: Pokemon = game.pokedex.find(
+			(d) => d.id == index
+		)
+		const obj = {
+			id,
+			name,
+			hp: base.HP,
+			attack: base.Attack,
+			defense: base.Defense,
+			speed: base.Speed
+		}
+		fighter = new Fighter(obj)
+		console.log('Tile Click! PkmnId:', fighter)
+	}
+
 	const initList = async () => {
 		viewId = 0
 		viewList = paginate(game.pokedex, viewSize)
 	}
 
 	const init = async () => {
-		await sleep()
+		await sleep(2000)
 		initList()
-		await sleep()
-		loading = false
 	}
-$inspect(prepend)
+	// $inspect(prepend)
 	let promise = init()
 </script>
 
-{#await promise then _}
+{#await promise}
+	<CssLoader active={true}></CssLoader>
+{:then _}
 	<section class="page-layer nwp">
 		<header class="content">
 			<div class="rounded-box bg-secondary text-secondary-content w-full p-12">
@@ -36,27 +55,7 @@ $inspect(prepend)
 		<div class="content pace-y-4">
 			<nav class="bg-base-100 grid grid-cols-3 gap-4 p-4">
 				{#each view as { id, name, type, base }}
-					<Tile
-						{id}
-						{name}
-						{type}
-						{base}
-						onClick={(e) => {
-							const index = parseInt(e.currentTarget.dataset.pkmn)
-							const { id, name, base, type }: Pokemon = game.pokedex.find(
-								(d) => d.id == index
-							)
-							const obj = {
-								id,
-								name,
-								hp: base.HP,
-								attack: base.Attack,
-								defense: base.Defense,
-								speed: base.Speed
-							}
-							fighter = new Fighter(obj)
-							console.log('Tile Click! PkmnId:', fighter)
-						}} />
+					<Tile {id} {name} {type} {base} onClick={selectPkmn} />
 				{/each}
 				{#each prepend as item}
 					<div class="bg-base-200 view-list-item">
@@ -67,13 +66,27 @@ $inspect(prepend)
 			<nav class="flex flex-wrap justify-center gap-2">
 				{#each viewList as _, i}
 					<button
-						class="btn btn-circle"
+						class="btn btn-sm btn-circle"
 						class:btn-info={viewId == i}
 						onclick={() => (viewId = i)}>{i + 1}</button>
 				{/each}
 			</nav>
 		</div>
 	</section>
-{/await}
 
-<CssLoader active={loading}></CssLoader>
+	<section class="page-layer nwp bottom" class:active={detailPage}>
+		{#if fighter}
+			<article class="content">
+				<hgroup>
+					<h1 class="text-center">Details</h1>
+				</hgroup>
+			</article>
+		{:else}
+			<article class="content">
+				<hgroup>
+					<h1 class="text-center">No Details</h1>
+				</hgroup>
+			</article>
+		{/if}
+	</section>
+{/await}
