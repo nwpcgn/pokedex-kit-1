@@ -34,9 +34,11 @@
   export interface FighterType {
 	id: number;
 	name: string;
+	type?: (string)[] | null;
 	hp: number;
 	attack: number;
 	defense: number;
 	speed: number;
   }
+  
   

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { game } from '../../lib/battle/battle.svelte.ts'
 	let { children, data } = $props()
-	$inspect(game?.name, game?.pokedex.length, game?.items.length)
+	// $inspect(game?.name, game?.pokedex.length, game?.items.length)
 	game.initData(data.pokedex)
 	game.initItems(data.items)
 </script>
