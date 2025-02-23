@@ -1,15 +1,16 @@
 <script lang="ts">
 	import Tile from './components/Tile.svelte'
 	import CssLoader from '$lib/component/CssLoader.svelte'
-	import { paginate, sleep } from './utils'
+	import { paginate, sleep, gArr } from './utils'
 	import type { Pokemon, FighterType } from './Types'
 	import { game, Fighter } from './battle.svelte.ts'
 	let viewList = $state([])
-	let viewSize = $state(6)
+	let viewSize = $state(9)
 	let viewId = $state(0)
 	let view = $derived(viewList[viewId])
 	let fighter: FighterType = $state()
 	let loading = $state(true)
+	let prepend = $derived(gArr(viewSize - view?.length | 0))
 	const initList = async () => {
 		viewId = 0
 		viewList = paginate(game.pokedex, viewSize)
@@ -21,7 +22,7 @@
 		await sleep()
 		loading = false
 	}
-
+$inspect(prepend)
 	let promise = init()
 </script>
 
@@ -56,6 +57,11 @@
 							fighter = new Fighter(obj)
 							console.log('Tile Click! PkmnId:', fighter)
 						}} />
+				{/each}
+				{#each prepend as item}
+					<div class="bg-base-200 view-list-item">
+						<div class="sr-only">{item}</div>
+					</div>
 				{/each}
 			</nav>
 			<nav class="flex flex-wrap justify-center gap-2">
