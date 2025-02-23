@@ -1,0 +1,11 @@
+.view-list-item {
+    display: grid;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    grid-template: 1 / 1;
+}
+
+.view-list-item > * {
+    grid-row: 1;
+    grid-column: 1;
+}

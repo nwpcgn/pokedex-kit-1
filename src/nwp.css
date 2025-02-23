@@ -457,6 +457,7 @@ svg.icon {
 	grid-gap: var(--gap);
 	grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
 }
+
 .img-grid {
 	figure {
 		display: grid;
@@ -489,6 +490,7 @@ svg.icon {
 		background-color: #eee;
 	}
 }
+
 .resp-media {
 	aspect-ratio: 16/9;
 	display: grid;
@@ -517,4 +519,207 @@ svg.icon {
 .resp-media > img.closed,
 .resp-media > video.closed {
 	transform: translateY(-100%);
+}
+
+.pkmn-icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	stroke-width: 0;
+	stroke: currentColor;
+	fill: currentColor;
+}
+
+/* ==========================================
+  Single-colored icons can be modified like so:
+  .pkmn-name {
+    font-size: 32px;
+    color: red;
+  }
+  ========================================== */
+
+.pkmn-icon {
+	font-size: var(--fs, 16px);
+}
+
+.pkmn-hp {
+	width: 2.75em;
+}
+
+.pkmn-level {
+	width: 1.2001953125em;
+}
+
+.stack-wrapp {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	overflow: hidden;
+	grid-template: 1 / 1;
+}
+
+.grid-wrapp {
+	display: grid;
+	overflow: hidden;
+	grid-template: 1 / 1;
+}
+
+.stack-layer {
+	grid-row: 1;
+	grid-column: 1;
+	overflow-x: hidden;
+	overflow-y: auto;
+	transition: opacity 400ms ease-in-out 50ms;
+	position: relative;
+}
+
+.stack-layer.closed {
+	z-index: -1;
+	opacity: 0;
+}
+
+.stack-layer.active {
+	z-index: 100;
+	opacity: 1;
+	transform: translate(0, 0);
+}
+
+.stack-layer.horiz-layer {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	overflow: hidden;
+}
+
+.horiz-layer .article {
+	flex: 1;
+}
+
+.horiz-layer .aside {
+	height: var(--sb-w, 50%);
+	width: 100%;
+}
+
+@media (min-width: 620px) {
+	.horiz-layer.stack-layer {
+		flex-direction: row;
+	}
+
+	.stack-layer .aside {
+		width: var(--sb-w, 50%);
+		height: 100%;
+	}
+}
+
+.pkmn-flip-card {
+	display: grid;
+	grid-template-columns: 1fr 3fr 1fr;
+	grid-template-rows: min-content 1.5fr 1.5fr min-content;
+	gap: 0px 0px;
+	grid-auto-flow: row;
+	border: 1px solid var(--gb-300);
+}
+
+.pkmn-flip-card .caption {
+	grid-area: 3 / 1 / 5 / 4;
+	background-color: var(--gb-200);
+}
+
+.pkmn-flip-card .index {
+	grid-area: 1 / 2 / 2 / 4;
+	text-align: right;
+	font-size: 1.4rem;
+	font-weight: 600;
+	padding: var(--spacing-xs);
+}
+
+.pkmn-flip-card .figure {
+	grid-area: 2 / 2 / 4 / 3;
+}
+
+.pkmn-flip-card .caption-text {
+	grid-area: 4 / 1 / 5 / 4;
+	text-align: center;
+	font-weight: 800;
+	font-size: 1.8rem;
+	padding: var(--spacing-xs);
+}
+
+/* ------------------------------- Battle Grid ------------------------------ */
+
+.battle-grid {
+	display: grid;
+	width: var(--gg-rs);
+	height: var(--gg-rs);
+	grid-template-columns: repeat(var(--gg-rw), minmax(0, 1fr));
+	grid-template-rows: repeat(var(--gg-rh), minmax(0, 1fr));
+	overflow: hidden;
+	gap: 1px;
+	background-color: var(--color-base-300);
+	border: 1px solid var(--color-base-300);
+}
+
+.battle-grid > * {
+	display: grid;
+	place-content: center;
+	background-color: var(--bg, var(--color-base-100));
+	opacity: var(--op, 1);
+	transition: all 0.5s ease-in;
+}
+
+.tile-blank {
+	--bg: var(--gb-200);
+	color: var(--gb-200);
+}
+
+.tile-floor {
+	--bg: var(--color-base-200);
+	color: var(--color-base-200);
+}
+
+.tile-wall {
+	--bg: var(--color-neutral);
+	color: var(--color-neutral);
+}
+
+.tile-enemy {
+	--bg: var(--color-base-200);
+	color: var(--color-base-200);
+}
+
+.enemyActive > .tile-enemy {
+	--bg: var(--color-error);
+	color: var(--color-error);
+}
+
+.tile-loot {
+	--bg: var(--color-base-200);
+	color: var(--color-base-200);
+}
+
+.lootActive > .tile-loot {
+	--bg: var(--color-warning);
+	color: var(--color-warning);
+}
+
+.tile-player {
+	--bg: var(--color-info);
+	color: var(--color-info);
+}
+
+.battle-grid {
+	--gg-rw: 12;
+	--gg-rh: 12;
+	--gg-rs: 500px;
+}
+
+.battle-grid-wrapp {
+	display: grid;
+	grid-template: 1 / 1;
+	overflow: hidden;
+}
+
+.battle-grid-wrapp > .battle-grid {
+	grid-row: 1;
+	grid-column: 1;
 }
